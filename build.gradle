@@ -13,21 +13,20 @@ buildscript {
 
 repositories {
     mavenCentral()
-    maven {
-        url "http://repo.spring.io/milestone/"
-    }
 }
 
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.4.11'
-    compile "org.springframework.boot:spring-boot-starter-data-jpa:1.5.4.RELEASE"
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa:'+springBootVersion
 
     compile 'postgresql:postgresql:9.1-901-1.jdbc4'
     //compile 'com.h2database:h2:1.4.191'
 
-    //compile "org.javers:javers-spring-boot-starter-sql:3.3.5"
+    //compile 'org.javers:javers-spring-boot-starter-sql:3.3.5'+javersVersion
 
-    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+    testCompile 'org.springframework.boot:spring-boot-starter-test:'+springBootVersion
+    testCompile 'org.spockframework:spock-core:'+spockVersion
+    testCompile 'org.spockframework:spock-spring:'+spockVersion
     testCompile 'junit:junit:4.12'
 }
 

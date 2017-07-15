@@ -1,7 +1,10 @@
 package org.javers.organization.structure.domain
 
+import org.springframework.stereotype.Service
+
 import static org.javers.organization.structure.domain.Position.*
 
+@Service
 class HierarchyService {
 
     Employee initStructure(){
