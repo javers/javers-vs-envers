@@ -1,11 +1,14 @@
 package org.javers.organization.structure.domain
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 import static org.javers.organization.structure.domain.Position.*
 
 @Service
 class HierarchyService {
+
+    @Autowired EmployeeRepository employeeRepository
 
     Employee initStructure(){
 
@@ -22,6 +25,8 @@ class HierarchyService {
         gandalf.addSubordinates(elrond, aragorn)
         aragorn.addSubordinate(thorin)
         thorin.addSubordinates(frodo, fili, kili, bifur, bombur)
+
+        employeeRepository.save(gandalf)
 
         gandalf
     }

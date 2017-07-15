@@ -1,12 +1,15 @@
 package org.javers.organization.structure.domain
 
+import javax.persistence.Column
 import javax.persistence.Embeddable
 
 @Embeddable
 class Address {
+    @Column(name = "address_city")
     String city
+
+    @Column(name = "address_street")
     String street
-    String houseNo
 
     Address() {
     }
