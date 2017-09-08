@@ -1,14 +1,6 @@
 package org.javers.organization.structure.domain
 
-import javax.persistence.AttributeOverride
-import javax.persistence.AttributeOverrides
-import javax.persistence.CascadeType
-import javax.persistence.Column
-import javax.persistence.Embedded
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.ManyToOne
-import javax.persistence.OneToMany
+import javax.persistence.*
 
 @Entity
 class Employee {
@@ -25,6 +17,7 @@ class Employee {
     Address address
 
     Integer salary
+
     Position position
 
     Employee() {
