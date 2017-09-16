@@ -1,4 +1,4 @@
-package org.javers.organization.structure.domain;
+package org.javers.organization.structure;
 
 /**
  * @author bartosz walacik

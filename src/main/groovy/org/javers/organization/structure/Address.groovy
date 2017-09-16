@@ -1,4 +1,4 @@
-package org.javers.organization.structure.domain
+package org.javers.organization.structure
 
 import javax.persistence.Column
 import javax.persistence.Embeddable

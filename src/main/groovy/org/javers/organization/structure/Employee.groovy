@@ -1,8 +1,11 @@
-package org.javers.organization.structure.domain
+package org.javers.organization.structure
+
+import org.hibernate.envers.Audited
 
 import javax.persistence.*
 
 @Entity
+@Audited
 class Employee {
     @Id
     String name
@@ -37,6 +40,10 @@ class Employee {
 
     void addSubordinates(Employee... subordinates) {
         subordinates.each {addSubordinate(it)}
+    }
+
+    void giveRaise(int raise) {
+        salary += raise
     }
 
     int getLevel() {

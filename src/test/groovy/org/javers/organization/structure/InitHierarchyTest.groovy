@@ -1,16 +1,20 @@
-package org.javers.organization.structure.domain
+package org.javers.organization.structure
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.Rollback
+import spock.lang.Shared
 import spock.lang.Specification
 
 @SpringBootTest
 @Rollback(false)
-class HierarchyServiceIntegrationSpec extends Specification {
+class InitHierarchyTest extends Specification {
 
     @Autowired
     HierarchyService hierarchyService
+
+    @Autowired
+    TheCleaner theCleaner
 
     def "should init and persist organization structure"(){
       given:
@@ -20,5 +24,9 @@ class HierarchyServiceIntegrationSpec extends Specification {
 
       expect:
       boss.name == "Gandalf"
+    }
+
+    def setup() {
+        theCleaner.cleanDb()
     }
 }

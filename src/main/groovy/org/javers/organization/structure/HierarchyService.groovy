@@ -1,9 +1,9 @@
-package org.javers.organization.structure.domain
+package org.javers.organization.structure
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
-import static org.javers.organization.structure.domain.Position.*
+import static Position.*
 
 @Service
 class HierarchyService {
@@ -29,5 +29,14 @@ class HierarchyService {
         employeeRepository.save(gandalf)
 
         gandalf
+    }
+
+    void giveRaise(Employee employee, int raise) {
+        employee.giveRaise(raise)
+        employeeRepository.save(employee)
+    }
+
+    Employee findByName(String name) {
+        employeeRepository.findOne(name)
     }
 }
