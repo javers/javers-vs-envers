@@ -1,7 +1,6 @@
 package org.javers.organization.structure
 
 import org.hibernate.envers.Audited
-
 import javax.persistence.*
 
 @Entity

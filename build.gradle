@@ -20,10 +20,11 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-data-jpa:'+springBootVersion
     compile 'postgresql:postgresql:9.1-901-1.jdbc4'
 
-    //envers dependencies
+    //envers
     compile 'org.hibernate:hibernate-envers:'+hibernateVersion
 
-    //compile 'org.javers:javers-spring-boot-starter-sql:3.3.5'+javersVersion
+    //javers
+    compile 'org.javers:javers-spring-boot-starter-sql:'+javersVersion
 
     testCompile 'org.springframework.boot:spring-boot-starter-test:'+springBootVersion
     testCompile 'org.spockframework:spock-core:'+spockVersion
