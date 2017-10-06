@@ -51,4 +51,8 @@ class EnversQueryTest extends Specification{
         then:
         folks.size() == 4
     }
+
+    def setup() {
+        theCleaner.cleanDb()
+    }
 }

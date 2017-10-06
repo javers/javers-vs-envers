@@ -47,4 +47,8 @@ class JaversQueryTest extends Specification{
         shadows[0].commitMetadata.id.majorId == 5
         shadows[3].commitMetadata.id.majorId == 2
     }
+
+    def setup() {
+        theCleaner.cleanDb()
+    }
 }
