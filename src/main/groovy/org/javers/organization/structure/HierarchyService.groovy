@@ -3,13 +3,17 @@ package org.javers.organization.structure
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
+import javax.transaction.Transactional
+
 import static Position.*
+import static javax.transaction.Transactional.TxType.*
 
 @Service
 class HierarchyService {
 
     @Autowired EmployeeRepository employeeRepository
 
+    @Transactional(REQUIRES_NEW)
     Employee initStructure(){
 
         def gandalf = new Employee('Gandalf', 10_000, CEO, 'Middle-earth')
@@ -31,8 +35,15 @@ class HierarchyService {
         gandalf
     }
 
+    @Transactional(REQUIRES_NEW)
     void giveRaise(Employee employee, int raise) {
         employee.giveRaise(raise)
+        employeeRepository.save(employee)
+    }
+
+    @Transactional(REQUIRES_NEW)
+    void updateCity(Employee employee, String city) {
+        employee.address.city = city
         employeeRepository.save(employee)
     }
 

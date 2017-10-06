@@ -1,6 +1,8 @@
 package org.javers.organization.structure
 
 import org.hibernate.envers.Audited
+import org.javers.common.string.ToStringBuilder
+
 import javax.persistence.*
 
 @Entity
@@ -32,6 +34,10 @@ class Employee {
         this.position = position
     }
 
+    Employee getSubordinate(String name) {
+        subordinates.find {it.name.equals(name)}
+    }
+
     void addSubordinate(Employee subordinate) {
         subordinate.boss = this
         this.subordinates.add(subordinate)
@@ -56,6 +62,14 @@ class Employee {
     }
 
     @Override
+    String toString() {
+        'Employee{ ' +
+            name + ' ' + position + ', $'  + salary + ', ' + address.city +
+            ', subordinates:'+ToStringBuilder.join(subordinates.collect{it.name}) +
+        ' }'
+    }
+
+    @Override
     int hashCode() {
         Objects.hashCode(name)
     }
@@ -64,4 +78,5 @@ class Employee {
     boolean equals(Object obj) {
         obj instanceof Employee && obj.name == this.name
     }
+
 }
