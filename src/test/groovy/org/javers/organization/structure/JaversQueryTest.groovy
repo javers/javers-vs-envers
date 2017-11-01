@@ -19,7 +19,7 @@ class JaversQueryTest extends Specification{
     Javers javers
 
     def "should browse JaVers history of objects by type"(){
-        given:
+      given:
         def gandalf = hierarchyService.initStructure()
         def aragorn = gandalf.getSubordinate('Aragorn')
         gandalf.prettyPrint()
@@ -30,22 +30,68 @@ class JaversQueryTest extends Specification{
         hierarchyService.giveRaise(aragorn, 100)
         hierarchyService.updateCity(aragorn, 'Shire')
 
-        when:
+      when:
         List<Shadow<Employee>> shadows = javers.findShadows(
                 QueryBuilder.byClass(Employee)
                             .withChildValueObjects()
+                            .withSnapshotTypeUpdate()
                             .build())
-                .subList(0,4) //no better way to filter out initial versions
 
         println 'javers history of Employees:'
         shadows.each { shadow ->
             println 'commit:' + shadow.commitMetadata.id + ', entity: '+ shadow.get()
         }
 
-        then:
+      then:
         shadows.size() == 4
         shadows[0].commitMetadata.id.majorId == 5
         shadows[3].commitMetadata.id.majorId == 2
+    }
+
+    def "should browse JaVers history of objects by type with filters"(){
+      given:
+        def gandalf = hierarchyService.initStructure()
+        def aragorn = gandalf.getSubordinate('Aragorn')
+        def thorin = aragorn.getSubordinate('Thorin')
+
+        //changes
+        [gandalf, aragorn, thorin].each {
+            hierarchyService.giveRaise(it, 100)
+            hierarchyService.updateCity(gandalf, 'Shire')
+        }
+
+      when: 'query with Id filter'
+        List<Shadow<Employee>> shadows = javers.findShadows(
+                QueryBuilder.byInstanceId('Aragorn', Employee)
+                            .withChildValueObjects()
+                            .build())
+
+      then:
+        println 'javers history of Aragorn:'
+        shadows.each { shadow ->
+          println 'commit:' + shadow.commitMetadata.id + ', entity: '+ shadow.get()
+        }
+
+        shadows.size() == 2
+        shadows.each {
+            assert it.get().name == 'Aragorn'
+        }
+
+      when: 'query with Property filter'
+        shadows = javers.findShadows(
+                QueryBuilder.byClass(Employee)
+                            .withChangedProperty('salary')
+                            .withSnapshotTypeUpdate()
+                            .withChildValueObjects()
+                            .build())
+
+      then:
+        println 'javers history of salary changes:'
+        shadows.each { shadow ->
+            println 'commit:' + shadow.commitMetadata.id + ', entity: '+ shadow.get()
+        }
+
+        shadows.size() == 3
     }
 
     def setup() {

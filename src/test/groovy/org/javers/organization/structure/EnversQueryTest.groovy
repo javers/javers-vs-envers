@@ -24,7 +24,7 @@ class EnversQueryTest extends Specification{
 
     @Transactional
     def "should browse Envers history of objects by type"(){
-        given:
+      given:
         def gandalf = hierarchyService.initStructure()
         def aragorn = gandalf.getSubordinate('Aragorn')
         gandalf.prettyPrint()
@@ -35,7 +35,7 @@ class EnversQueryTest extends Specification{
         hierarchyService.giveRaise(aragorn, 100)
         hierarchyService.updateCity(aragorn, 'Shire')
 
-        when:
+      when:
         List folks = AuditReaderFactory
                 .get(entityManager)
                 .createQuery()
@@ -48,7 +48,7 @@ class EnversQueryTest extends Specification{
             println 'revision:' + it[1].id + ', entity: '+ it[0]
         }
 
-        then:
+      then:
         folks.size() == 4
     }
 

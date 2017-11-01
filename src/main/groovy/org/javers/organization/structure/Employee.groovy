@@ -64,7 +64,7 @@ class Employee {
     @Override
     String toString() {
         'Employee{ ' +
-            name + ' ' + position + ', $'  + salary + ', ' + address.city +
+            name + ' ' + position + ', $'  + salary + ', ' + address?.city +
             ', subordinates:'+ToStringBuilder.join(subordinates.collect{it.name}) +
         ' }'
     }
