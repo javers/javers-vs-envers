@@ -40,7 +40,7 @@ class EnversQueryTest extends Specification{
                 .get(entityManager)
                 .createQuery()
                 .forRevisionsOfEntity( Employee, false, true )
-                .add(AuditEntity.revisionType().eq(MOD)) // filter out initial versions
+                .add(AuditEntity.revisionType().eq(MOD)) // without initial versions
                 .getResultList()
 
         println 'envers history of Employees:'
@@ -50,6 +50,53 @@ class EnversQueryTest extends Specification{
 
       then:
         folks.size() == 4
+    }
+
+    @Transactional
+    def "should browse Envers history of objects by type with filters"(){
+      given:
+        def gandalf = hierarchyService.initStructure()
+        def aragorn = gandalf.getSubordinate('Aragorn')
+        def thorin = aragorn.getSubordinate('Thorin')
+
+        //changes
+        [gandalf, aragorn, thorin].each {
+            hierarchyService.giveRaise(it, 100)
+            hierarchyService.updateCity(it, 'Shire')
+        }
+
+      when: 'query with Id filter'
+        List aragorns = AuditReaderFactory
+              .get(entityManager)
+              .createQuery()
+              .forRevisionsOfEntity( Employee, false, true )
+              .add( AuditEntity.id().eq( 'Aragorn' ) )
+              .getResultList()
+
+      then:
+        println 'envers history of Aragorn:'
+        aragorns.each {
+            println 'revision:' + it[1].id + ', entity: '+ it[0]
+        }
+
+        aragorns.size() == 3
+
+      when: 'query with Property filter'
+      List folks = AuditReaderFactory
+              .get(entityManager)
+              .createQuery()
+              .forRevisionsOfEntity( Employee, false, true )
+              .add( AuditEntity.property('salary').hasChanged() )
+              .add(AuditEntity.revisionType().eq(MOD))
+              .getResultList()
+
+      then:
+        println 'envers history of salary changes:'
+        folks.each {
+            println 'revision:' + it[1].id + ', entity: '+ it[0]
+        }
+
+        folks.size() == 3
     }
 
     def setup() {

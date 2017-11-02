@@ -57,7 +57,7 @@ class JaversQueryTest extends Specification{
         //changes
         [gandalf, aragorn, thorin].each {
             hierarchyService.giveRaise(it, 100)
-            hierarchyService.updateCity(gandalf, 'Shire')
+            hierarchyService.updateCity(it, 'Shire')
         }
 
       when: 'query with Id filter'
@@ -72,10 +72,7 @@ class JaversQueryTest extends Specification{
           println 'commit:' + shadow.commitMetadata.id + ', entity: '+ shadow.get()
         }
 
-        shadows.size() == 2
-        shadows.each {
-            assert it.get().name == 'Aragorn'
-        }
+        shadows.size() == 3
 
       when: 'query with Property filter'
         shadows = javers.findShadows(
