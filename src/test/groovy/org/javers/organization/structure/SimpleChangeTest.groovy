@@ -26,6 +26,6 @@ class SimpleChangeTest extends Specification {
     }
 
     def setup() {
-        theCleaner.cleanDb()
+        theCleaner.clean()
     }
 }

@@ -26,6 +26,6 @@ class InitHierarchyTest extends Specification {
     }
 
     def setup() {
-        theCleaner.cleanDb()
+        theCleaner.clean()
     }
 }

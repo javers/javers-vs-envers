@@ -4,6 +4,7 @@ import org.hibernate.envers.AuditReaderFactory
 import org.hibernate.envers.query.AuditEntity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.annotation.Rollback
 import spock.lang.Specification
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
@@ -12,6 +13,7 @@ import javax.transaction.Transactional
 import static org.hibernate.envers.RevisionType.MOD
 
 @SpringBootTest
+@Rollback(false)
 class EnversQueryTest extends Specification{
     @Autowired
     HierarchyService hierarchyService
@@ -78,7 +80,6 @@ class EnversQueryTest extends Specification{
         aragorns.each {
             println 'revision:' + it[1].id + ', entity: '+ it[0]
         }
-
         aragorns.size() == 3
 
       when: 'query with Property filter'
@@ -86,7 +87,7 @@ class EnversQueryTest extends Specification{
               .get(entityManager)
               .createQuery()
               .forRevisionsOfEntity( Employee, false, true )
-              .add( AuditEntity.property('salary').hasChanged() )
+              .add(AuditEntity.property('salary').hasChanged())
               .add(AuditEntity.revisionType().eq(MOD))
               .getResultList()
 
@@ -95,11 +96,10 @@ class EnversQueryTest extends Specification{
         folks.each {
             println 'revision:' + it[1].id + ', entity: '+ it[0]
         }
-
         folks.size() == 3
     }
 
     def setup() {
-        theCleaner.cleanDb()
+        theCleaner.clean()
     }
 }

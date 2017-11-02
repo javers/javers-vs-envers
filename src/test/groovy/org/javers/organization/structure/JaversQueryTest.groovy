@@ -5,9 +5,11 @@ import org.javers.repository.jql.QueryBuilder
 import org.javers.shadow.Shadow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.annotation.Rollback
 import spock.lang.Specification
 
 @SpringBootTest
+@Rollback(false)
 class JaversQueryTest extends Specification{
     @Autowired
     HierarchyService hierarchyService
@@ -71,7 +73,6 @@ class JaversQueryTest extends Specification{
         shadows.each { shadow ->
           println 'commit:' + shadow.commitMetadata.id + ', entity: '+ shadow.get()
         }
-
         shadows.size() == 3
 
       when: 'query with Property filter'
@@ -87,11 +88,10 @@ class JaversQueryTest extends Specification{
         shadows.each { shadow ->
             println 'commit:' + shadow.commitMetadata.id + ', entity: '+ shadow.get()
         }
-
         shadows.size() == 3
     }
 
     def setup() {
-        theCleaner.cleanDb()
+        theCleaner.clean()
     }
 }
