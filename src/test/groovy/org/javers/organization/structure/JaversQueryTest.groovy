@@ -35,7 +35,6 @@ class JaversQueryTest extends Specification{
       when:
         List<Shadow<Employee>> shadows = javers.findShadows(
                 QueryBuilder.byClass(Employee)
-                            .withChildValueObjects()
                             .withSnapshotTypeUpdate()
                             .build())
 
@@ -64,9 +63,7 @@ class JaversQueryTest extends Specification{
 
       when: 'query with Id filter'
         List<Shadow<Employee>> shadows = javers.findShadows(
-                QueryBuilder.byInstanceId('Aragorn', Employee)
-                            .withChildValueObjects()
-                            .build())
+                QueryBuilder.byInstanceId('Aragorn', Employee).build())
 
       then:
         println 'javers history of Aragorn:'
@@ -80,7 +77,6 @@ class JaversQueryTest extends Specification{
                 QueryBuilder.byClass(Employee)
                             .withChangedProperty('salary')
                             .withSnapshotTypeUpdate()
-                            .withChildValueObjects()
                             .build())
 
       then:
@@ -89,6 +85,51 @@ class JaversQueryTest extends Specification{
             println 'commit:' + shadow.commitMetadata.id + ', entity: '+ shadow.get()
         }
         shadows.size() == 3
+    }
+
+    def "should reconstruct a full object graph with JaVers"(){
+      given:
+        def gandalf = hierarchyService.initStructure()
+        def aragorn = gandalf.getSubordinate('Aragorn')
+        def thorin = aragorn.getSubordinate('Thorin')
+        def bombur = thorin.getSubordinate("Bombur")
+        println "before"
+      gandalf.prettyPrint()
+
+        [gandalf,aragorn, bombur].each {
+            hierarchyService.updateSalary(it, 6000)
+        }
+
+        hierarchyService.giveRaise(thorin, 1000)
+        //this state we want to reconstruct,
+        //when all the four guys have salary $6000
+        gandalf.prettyPrint()
+
+        [gandalf, aragorn, thorin, bombur].each {
+            hierarchyService.giveRaise(it, 500)
+        }
+
+        println "after"
+        gandalf.prettyPrint()
+
+      when:
+        def start = System.currentTimeMillis()
+        List<Shadow<Employee>> shadows = javers.findShadows(
+                QueryBuilder.byInstanceId('Thorin', Employee)
+                            .withScopeDeepPlus()
+                            .build())
+
+      then:
+        def thorinShadow = shadows.collect{it.get()}.find{it.salary == 6000}
+        [thorinShadow,
+         thorinShadow.getBoss(),
+         thorinShadow.getBoss().getBoss(),
+         thorinShadow.getSubordinate("Bombur")].each
+        {
+            println it
+            assert it.salary == 6000
+        }
+        println "JaVers query executed in " + (System.currentTimeMillis() - start) + " millis"
     }
 
     def setup() {

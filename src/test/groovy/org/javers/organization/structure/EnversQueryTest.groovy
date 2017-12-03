@@ -99,6 +99,51 @@ class EnversQueryTest extends Specification{
         folks.size() == 3
     }
 
+    @Transactional
+    def "should reconstruct a full object graph with Envers"(){
+      given:
+        def gandalf = hierarchyService.initStructure()
+        def aragorn = gandalf.getSubordinate('Aragorn')
+        def thorin = aragorn.getSubordinate('Thorin')
+        def bombur = thorin.getSubordinate("Bombur")
+        gandalf.prettyPrint()
+
+        [gandalf,aragorn, bombur].each {
+            hierarchyService.updateSalary(it, 6000)
+        }
+
+        hierarchyService.giveRaise(thorin, 1000)
+        //this state we want to reconstruct,
+        //when all the four guys have salary $6000
+        gandalf.prettyPrint()
+
+        [gandalf, aragorn, thorin, bombur].each {
+            hierarchyService.giveRaise(it, 500)
+        }
+
+      when:
+        def start = System.currentTimeMillis()
+        List thorins = AuditReaderFactory
+              .get(entityManager)
+              .createQuery()
+              .forRevisionsOfEntity( Employee, false, true )
+              .add( AuditEntity.id().eq( 'Thorin' ) )
+              .getResultList()
+
+      then:
+        def thorinShadow = thorins.collect{it[0]}.find{it.salary == 6000}
+
+        [thorinShadow,
+         thorinShadow.getBoss(),
+         thorinShadow.getBoss().getBoss(),
+         thorinShadow.getSubordinate("Bombur")].each
+        {
+            println it
+            assert it.salary == 6000
+        }
+        println "Envers query executed in " + (System.currentTimeMillis() - start) + " millis"
+    }
+
     def setup() {
         theCleaner.clean()
     }

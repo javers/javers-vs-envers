@@ -16,15 +16,15 @@ repositories {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.4.11'
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa:'+springBootVersion
-    compile 'postgresql:postgresql:9.1-901-1.jdbc4'
+    //javers
+    compile 'org.javers:javers-spring-boot-starter-sql:3.7.5'
 
     //envers
     compile 'org.hibernate:hibernate-envers:'+hibernateVersion
-
-    //javers
-    compile 'org.javers:javers-spring-boot-starter-sql:'+javersVersion
+    
+    compile 'org.codehaus.groovy:groovy-all:2.4.11'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa:'+springBootVersion
+    compile 'postgresql:postgresql:9.1-901-1.jdbc4'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test:'+springBootVersion
     testCompile 'org.spockframework:spock-core:'+spockVersion

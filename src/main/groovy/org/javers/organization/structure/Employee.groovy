@@ -6,7 +6,7 @@ import org.javers.common.string.ToStringBuilder
 import javax.persistence.*
 
 @Entity
-@Audited
+@Audited( withModifiedFlag=true )
 class Employee {
     @Id
     String name
@@ -49,6 +49,10 @@ class Employee {
 
     void giveRaise(int raise) {
         salary += raise
+    }
+
+    void updateSalary(int salary) {
+        this.salary = salary
     }
 
     int getLevel() {

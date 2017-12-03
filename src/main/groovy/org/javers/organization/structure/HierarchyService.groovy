@@ -42,6 +42,12 @@ class HierarchyService {
     }
 
     @Transactional(REQUIRES_NEW)
+    void updateSalary(Employee employee, int salary) {
+        employee.updateSalary(salary)
+        employeeRepository.save(employee)
+    }
+
+    @Transactional(REQUIRES_NEW)
     void updateCity(Employee employee, String city) {
         employee.address.city = city
         employeeRepository.save(employee)
