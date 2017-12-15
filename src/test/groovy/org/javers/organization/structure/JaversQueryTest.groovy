@@ -93,11 +93,9 @@ class JaversQueryTest extends Specification{
         def aragorn = gandalf.getSubordinate('Aragorn')
         def thorin = aragorn.getSubordinate('Thorin')
         def bombur = thorin.getSubordinate("Bombur")
-        println "before"
-      gandalf.prettyPrint()
 
         [gandalf,aragorn, bombur].each {
-            hierarchyService.updateSalary(it, 6000)
+          hierarchyService.updateSalary(it, 6000)
         }
 
         hierarchyService.giveRaise(thorin, 1000)
@@ -106,11 +104,8 @@ class JaversQueryTest extends Specification{
         gandalf.prettyPrint()
 
         [gandalf, aragorn, thorin, bombur].each {
-            hierarchyService.giveRaise(it, 500)
+          hierarchyService.giveRaise(it, 500)
         }
-
-        println "after"
-        gandalf.prettyPrint()
 
       when:
         def start = System.currentTimeMillis()

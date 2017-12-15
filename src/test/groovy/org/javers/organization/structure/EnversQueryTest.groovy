@@ -106,7 +106,6 @@ class EnversQueryTest extends Specification{
         def aragorn = gandalf.getSubordinate('Aragorn')
         def thorin = aragorn.getSubordinate('Thorin')
         def bombur = thorin.getSubordinate("Bombur")
-        gandalf.prettyPrint()
 
         [gandalf,aragorn, bombur].each {
             hierarchyService.updateSalary(it, 6000)
