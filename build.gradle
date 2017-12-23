@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
     //javers
-    compile 'org.javers:javers-spring-boot-starter-sql:3.7.5'
+    compile 'org.javers:javers-spring-boot-starter-sql:3.7.7'
 
     //envers
     compile 'org.hibernate:hibernate-envers:'+hibernateVersion
