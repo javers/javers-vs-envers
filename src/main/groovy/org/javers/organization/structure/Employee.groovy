@@ -1,12 +1,12 @@
 package org.javers.organization.structure
 
-//import org.hibernate.envers.Audited
+import org.hibernate.envers.Audited
 import org.javers.common.string.ToStringBuilder
 
 import javax.persistence.*
 
 @Entity
-//@Audited( withModifiedFlag=true )
+@Audited( withModifiedFlag=true )
 class Employee {
     @Id
     String name

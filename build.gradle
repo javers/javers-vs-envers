@@ -20,10 +20,12 @@ dependencies {
     compile 'org.javers:javers-spring-boot-starter-sql:5.8.5'
 
     //envers
-    //compile 'org.hibernate:hibernate-envers:5.3.11.Final'
+    compile 'org.hibernate:hibernate-envers:5.3.11.Final'
     compile 'org.codehaus.groovy:groovy-all:2.4.11'
     compile 'com.h2database:h2:1.4.200'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.javassist:javassist:3.26.0-GA'
+    compile 'org.glassfish.jaxb:jaxb-runtime:2.3.0'
 
     testCompile ('org.springframework.boot:spring-boot-starter-test')
     testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
