@@ -54,6 +54,6 @@ class HierarchyService {
     }
 
     Employee findByName(String name) {
-        employeeRepository.findOne(name)
+        employeeRepository.findById(name).get()
     }
 }
