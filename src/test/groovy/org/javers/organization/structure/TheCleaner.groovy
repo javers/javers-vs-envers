@@ -27,8 +27,8 @@ class TheCleaner {
         sql.execute('delete from jv_snapshot')
         sql.execute('delete from jv_global_id')
         sql.execute('delete from jv_commit')
-        sql.execute('delete from employee_aud')
-        sql.execute('delete from revinfo')
+     //   sql.execute('delete from employee_aud')
+     //   sql.execute('delete from revinfo')
         sql.execute('delete from employee')
 
         javersRepository.evictCache()

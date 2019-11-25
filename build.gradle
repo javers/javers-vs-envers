@@ -1,14 +1,14 @@
-apply plugin: 'java'
-apply plugin: 'groovy'
-apply plugin: 'org.springframework.boot'
-
 buildscript {
     repositories {
         mavenCentral()
     }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
-    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.1.8.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+    id 'groovy'
 }
 
 repositories {
@@ -17,19 +17,18 @@ repositories {
 
 dependencies {
     //javers
-    compile 'org.javers:javers-spring-boot-starter-sql:3.7.7'
+    compile 'org.javers:javers-spring-boot-starter-sql:5.8.5'
 
     //envers
-    compile 'org.hibernate:hibernate-envers:'+hibernateVersion
-    
+    //compile 'org.hibernate:hibernate-envers:5.3.11.Final'
     compile 'org.codehaus.groovy:groovy-all:2.4.11'
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa:'+springBootVersion
-    compile 'postgresql:postgresql:9.1-901-1.jdbc4'
+    compile 'com.h2database:h2:1.4.200'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-    testCompile 'org.springframework.boot:spring-boot-starter-test:'+springBootVersion
-    testCompile 'org.spockframework:spock-core:'+spockVersion
-    testCompile 'org.spockframework:spock-spring:'+spockVersion
+    testCompile ('org.springframework.boot:spring-boot-starter-test')
+    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+    testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4'
     testCompile 'junit:junit:4.12'
 }
 
-sourceCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_1_8
